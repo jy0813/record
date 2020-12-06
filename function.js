@@ -148,7 +148,25 @@ console.log(simple(2, 3));
 
 
 function calculate(command, a, b) {
-  if(command === 'hey work') {
+  switch (command) {
+    case 'add':
+    return a + b;
 
+    case 'substract':
+    return a - b;
+
+    case 'divide':
+    return a / b;
+
+    case 'mutiply':
+    return a * b;
+
+    case 'remainder':
+    return a + b;
+      
+    default:
+      throw Error('unknown command');
   }
 }
+
+console.log(calculate('add', 2, 3));
