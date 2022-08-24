@@ -1,4 +1,4 @@
-"uset strict";
+// "uset strict";
 
 const pig = { name: "와우", age: 20 };
 
@@ -57,4 +57,4 @@ Object.defineProperties(student, {
     configurable: true,
   },
 });
-console.log(student.fullNmae);
+console.log(student);
