@@ -14,7 +14,7 @@
 
 <div>
   <p>순서도</p>
-  <img src="img/flowChart.png">
+  <img src="img/calculatorChart.png">
 </div>
 
 <div class="game-wrap">
@@ -42,7 +42,7 @@
     <button id="clear">C</button>
     <button id="num-0">0</button>
     <button id="calculate">=</button>
-    <button id="multiply">x</button>
+    <button id="multiply">*</button>
   </div>
 </div>
 
@@ -54,11 +54,15 @@
   const $result = document.querySelector('#result');
 
   const onClickNumber = (e) => {
-      if(operator) {
-        number2 += e.target.textContent;
-      } else {
+      if(!operator) {
         number1 += e.target.textContent;
+        $result.value += e.target.textContent;
+        return;
       }
+      if(!number2) {
+          $result.value = '';
+      }
+      number2 += e.target.textContent;
       $result.value += e.target.textContent;
   } //high order function
 
@@ -74,21 +78,72 @@
   document.querySelector('#num-9').addEventListener('click', onClickNumber);
 
   const onClickOperator = (e) => {
+    if(number2) {
+      switch (operator) {
+        case '+' :
+          $result.value = parseInt(number1) + parseInt(number2);
+          break;
+        case '-':
+          $result.value = parseInt(number1) - parseInt(number2);
+          break;
+        case '*':
+          $result.value = parseInt(number1) * parseInt(number2);
+          break
+        case '/':
+          $result.value = parseInt(number1) / parseInt(number2);
+          break;
+        default:
+          break;
+      }
+      number1 = $result.value;
+      number2 = '';
+    }
     if(number1) {
       operator = e.target.textContent;
-      $result.value = '';
+      $operator.value = e.target.textContent;
     } else {
       alert('숫자 1이 없습니다.')
     }
-    $operator.value = e.target.textContent;
   }
 
   document.querySelector('#plus').addEventListener('click', onClickOperator);
   document.querySelector('#minus').addEventListener('click', onClickOperator);
   document.querySelector('#divide').addEventListener('click', onClickOperator);
   document.querySelector('#multiply').addEventListener('click', onClickOperator);
-  document.querySelector('#calculate').addEventListener('click', () => {});
-  document.querySelector('#clear').addEventListener('click', () => {});
+  document.querySelector('#calculate').addEventListener('click', () => {
+    if(number2) {
+      switch (operator) {
+        case '+' :
+          $result.value = parseInt(number1) + parseInt(number2);
+          break;
+        case '-':
+          $result.value = parseInt(number1) - parseInt(number2);
+          break;
+        case '*':
+          $result.value = parseInt(number1) * parseInt(number2);
+          break
+        case '/':
+          $result.value = parseInt(number1) / parseInt(number2);
+          break;
+        default:
+          break;
+      }
+      $operator.value = '';
+      number1 = $result.value;
+      operator = '';
+      number2 = ''
+    } else {
+      alert('숫자를 먼저 입력하세요.');
+    }
+  });
+  document.querySelector('#clear').addEventListener('click', () => {
+    number1 = '';
+    number2 = '';
+    operator = '';
+    $result.value = '';
+    $operator.value = '';
+  });
+
 </script>
 
 </body>
