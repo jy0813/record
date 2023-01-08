@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    #computer {
+      width: 165px;
+      height: 200px;
+    }
+    .btn-wrap {
+      margin-top: 50px;
+    }
+    #score {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+<div id="computer"></div>
+<div class="btn-wrap">
+  <button id="scissors" class="btn">가위</button>
+  <button id="rock" class="btn">바위</button>
+  <button id="paper" class="btn">보</button>
+</div>
+<div id="score">0</div>
+<script>
+  const $computer = document.querySelector('#computer');
+  const $score = document.querySelector('#score');
+  const $scissors = document.querySelector('#scissors');
+  const $rock = document.querySelector('#rock')
+  const $paper  = document.querySelector('#paper');
+  const $btn = document.querySelectorAll('.btn');
+  const IMG_URL = 'img/rsp.png';
+  $computer.style.background = `url(${IMG_URL}) 0 0`;
+  $computer.style.backgroundSize = 'auto 200px';
+
+  const rspX = {
+    scissors:'0',
+    rock: '-220px',
+    paper:'-440px'
+  }
+
+  let computerChoice = 'scissors';
+
+  const imgChange = () => {
+    if(computerChoice === 'scissors') {
+      computerChoice = 'rock'
+    } else if(computerChoice === 'rock') {
+      computerChoice = 'paper'
+    } else if(computerChoice === 'paper') {
+      computerChoice = 'scissors'
+    }
+    $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+    $computer.style.backgroundSize = 'auto 200px';
+  }
+
+  const scoreTable = {
+    rock:0,
+    scissors: 1,
+    paper:-1,
+  }
+  let intervalId = setInterval(imgChange, 50);
+  let clickavble = true;
+  let score = 0;
+
+  const clickButton = (e) => {
+    if(clickavble) {
+      clearInterval(intervalId);
+      clickavble = false;
+      const myChoice = e.target.id;
+      const myScore = scoreTable[myChoice];
+      const computerScore = scoreTable[computerChoice];
+      const diff = myScore - computerScore;
+      let message;
+
+      if(diff === 2 || diff === -1) { //[2,-1].includes(diff)
+        score += 1;
+        message = '승리';
+      } else if(diff === -2 || diff === 1) { //[-2,1].includes(diff)
+        score -= 1;
+        message = '패배';
+      } else {
+        message = '무승부';
+      }
+      $score.textContent = `${message} 총 : ${score}점`
+      setTimeout(() => {
+        clickavble = true;
+        intervalId = setInterval(imgChange, 50);
+      }, 3000)
+    }
+  }
+
+  $btn.forEach((item) => {
+    item.addEventListener('click', clickButton);
+  })
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
